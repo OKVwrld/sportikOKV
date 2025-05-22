@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Волейбол - Турнирная таблица</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .match-form {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input {
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .match-results {
+            margin-top: 30px;
+        }
+        .match-day {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .team-row:hover {
+            background-color: #f5f5f5;
+        }
+        .match-result {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .schedule-table {
+            margin-top: 30px;
+        }
+        .final-stage {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: #f2f2f2;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        .tab.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .highlighted {
+            background-color: #ffffcc;
+        }
+        
+        /* Добавляем стили для адаптивности на мобильных устройствах */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Медиа-запрос для мобильных устройств */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 10px;
+            }
+            .tabs {
+                flex-wrap: wrap;
+            }
+            .tab {
+                margin-bottom: 5px;
+                flex-grow: 1;
+                text-align: center;
+            }
+            th, td {
+                padding: 6px 4px;
+                font-size: 0.9em;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Волейбольный турнир</h1>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('tab-standings')">Таблица</div>
+            <div class="tab" onclick="showTab('tab-schedule')">Расписание</div>
+        </div>
+        
+        <div id="tab-standings" class="tab-content active">
+            <h2>Турнирная таблица</h2>
+            <div class="table-container">
+                <table id="standings">
+                    <thead>
+                        <tr>
+                            <th>Позиция</th>
+                            <th>Команда</th>
+                            <th>Игры</th>
+                            <th>Победы</th>
+                            <th>Поражения</th>
+                            <th>Партии выигранные</th>
+                            <th>Партии проигранные</th>
+                            <th>Очки</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standings-body">
+                        <!-- Данные будут добавлены через JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div id="tab-schedule" class="tab-content">
+            <h2>Расписание игр</h2>
+            <div class="table-container">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>День недели</th>
+                            <th>Время</th>
+                            <th>Команда 1</th>
+                            <th>Команда 2</th>
+                            <th>Счет</th>
+                        </tr>
+                    </thead>
+                    <tbody id="schedule-body">
+                        <!-- Данные будут добавлены через JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="final-stage">
+                <h3>Финальный этап</h3>
+                <div class="table-container">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>День недели</th>
+                                <th>Время</th>
+                                <th>Матч</th>
+                                <th>Команды</th>
+                                <th>Счет</th>
+                            </tr>
+                        </thead>
+                        <tbody id="final-schedule-body">
+                            <!-- Данные будут добавлены через JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация данных о командах
+        const teams = [
+            { name: "НТЦ-1", matches: 0, wins: 0, losses: 0, setsWon: 0, setsLost: 0, points: 0 },
+            { name: "НТЦ-2 (Д)", matches: 0, wins: 0, losses: 0, setsWon: 0, setsLost: 0, points: 0 },
+            { name: "НТЦ-2 (С)", matches: 0, wins: 0, losses: 0, setsWon: 0, setsLost: 0, points: 0 },
+            { name: "НТЦ-3", matches: 0, wins: 0, losses: 0, setsWon: 0, setsLost: 0, points: 0 },
+            { name: "СГИ", matches: 0, wins: 0, losses: 0, setsWon: 0, setsLost: 0, points: 0 }
+        ];
+
+        // Массив для хранения результатов матчей
+        let matches = [
+            { team1: "НТЦ-1", team2: "НТЦ-2 (С)", team1Score: 2, team2Score: 1 },
+            { team1: "НТЦ-2 (Д)", team2: "НТЦ-3", team1Score: 1, team2Score: 2 },
+            { team1: "СГИ", team2: "НТЦ-1", team1Score: 0, team2Score: 2 },
+            { team1: "НТЦ-2 (С)", team2: "НТЦ-2 (Д)", team1Score: 0, team2Score: 2 },
+            { team1: "НТЦ-3", team2: "СГИ", team1Score: 2, team2Score: 0 },
+            { team1: "НТЦ-1", team2: "НТЦ-2 (Д)", team1Score: 1, team2Score: 2 },
+            { team1: "НТЦ-2 (С)", team2: "НТЦ-3", team1Score: 0, team2Score: 2 },
+            { team1: "СГИ", team2: "НТЦ-2 (Д)", team1Score: 2, team2Score: 1 }
+        ];
+        
+        // Массив для хранения результатов финальных матчей
+        let finalMatches = {
+            thirdPlace: null,
+            final: null
+        };
+        
+        // Расписание матчей с датами и временем
+        let matchSchedule = [
+            { date: "19.05.2025", day: "ПН", time: "12:10-12:30", team1: "НТЦ-1", team2: "НТЦ-2 (С)", result: "2:1" },
+            { date: "19.05.2025", day: "ПН", time: "12:30-12:50", team1: "НТЦ-2 (Д)", team2: "НТЦ-3", result: "1:2" },
+            { date: "20.05.2025", day: "ВТ", time: "12:10-12:30", team1: "СГИ", team2: "НТЦ-1", result: "0:2" },
+            { date: "20.05.2025", day: "ВТ", time: "12:30-12:50", team1: "НТЦ-2 (С)", team2: "НТЦ-2 (Д)", result: "0:2" },
+            { date: "21.05.2025", day: "СР", time: "12:10-12:30", team1: "НТЦ-3", team2: "СГИ", result: "2:0" },
+            { date: "21.05.2025", day: "СР", time: "12:30-12:50", team1: "НТЦ-1", team2: "НТЦ-2 (Д)", result: "1:2" },
+            { date: "22.05.2025", day: "ЧТ", time: "12:10-12:30", team1: "НТЦ-2 (С)", team2: "НТЦ-3", result: "0:2" },
+            { date: "22.05.2025", day: "ЧТ", time: "12:30-12:50", team1: "СГИ", team2: "НТЦ-2 (Д)", result: "2:1" },
+            { date: "23.05.2025", day: "ПТ", time: "12:10-12:30", team1: "НТЦ-1", team2: "НТЦ-3", result: null },
+            { date: "23.05.2025", day: "ПТ", time: "12:30-12:50", team1: "НТЦ-2 (С)", team2: "СГИ", result: null }
+        ];
+        
+        // Расписание финальных матчей
+        let finalSchedule = [
+            { date: "26.05.2025", day: "ПН", time: "12:10-12:30", type: "third-place", name: "Матч за 3 место", team1: "", team2: "", result: null },
+            { date: "26.05.2025", day: "ПН", time: "12:30-12:50", type: "final", name: "Финал", team1: "", team2: "", result: null }
+        ];
+        
+        // Функция для переключения между вкладками
+        function showTab(tabId) {
+            // Скрываем все вкладки
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Удаляем активный класс со всех заголовков вкладок
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Показываем выбранную вкладку
+            document.getElementById(tabId).classList.add('active');
+            
+            // Находим и активируем заголовок вкладки
+            Array.from(document.querySelectorAll('.tab')).find(tab => 
+                tab.getAttribute('onclick').includes(tabId)
+            ).classList.add('active');
+        }
+        
+        // Функция для обновления статистики команд
+        function updateTeamStats() {
+            // Сбрасываем статистику всех команд
+            teams.forEach(team => {
+                team.matches = 0;
+                team.wins = 0;
+                team.losses = 0;
+                team.setsWon = 0;
+                team.setsLost = 0;
+                team.points = 0;
+            });
+
+            // Обновляем статистику на основе результатов матчей
+            matches.forEach(match => {
+                const team1Index = teams.findIndex(t => t.name === match.team1);
+                const team2Index = teams.findIndex(t => t.name === match.team2);
+
+                // Обновляем количество матчей
+                teams[team1Index].matches++;
+                teams[team2Index].matches++;
+
+                // Обновляем статистику партий
+                teams[team1Index].setsWon += match.team1Score;
+                teams[team1Index].setsLost += match.team2Score;
+                teams[team2Index].setsWon += match.team2Score;
+                teams[team2Index].setsLost += match.team1Score;
+
+                // Определяем победителя матча и обновляем очки
+                if (match.team1Score > match.team2Score) {
+                    teams[team1Index].wins++;
+                    teams[team2Index].losses++;
+                    teams[team1Index].points += 2; // 2 очка за победу
+                    teams[team2Index].points += 1; // 1 очко за поражение
+                } else {
+                    teams[team2Index].wins++;
+                    teams[team1Index].losses++;
+                    teams[team2Index].points += 2; // 2 очка за победу
+                    teams[team1Index].points += 1; // 1 очко за поражение
+                }
+            });
+        }
+
+        // Функция для обновления турнирной таблицы
+        function updateStandings() {
+            // Сортируем команды по очкам, затем по количеству выигранных партий, затем по личным встречам
+            const sortedTeams = [...teams].sort((a, b) => {
+                // Сначала по очкам (убывание)
+                if (a.points !== b.points) {
+                    return b.points - a.points;
+                }
+                
+                // Затем по выигранным партиям (убывание)
+                if (a.setsWon !== b.setsWon) {
+                    return b.setsWon - a.setsWon;
+                }
+                
+                // При равенстве очков и партий - результаты личных встреч
+                // Ищем матч между этими командами
+                const directMatch = matches.find(match => 
+                    (match.team1 === a.name && match.team2 === b.name) || 
+                    (match.team1 === b.name && match.team2 === a.name)
+                );
+                
+                if (directMatch) {
+                    // Определяем, кто выиграл этот матч
+                    if (directMatch.team1 === a.name) {
+                        // Если a был первой командой в матче
+                        return directMatch.team1Score > directMatch.team2Score ? -1 : 1;
+                    } else {
+                        // Если b был первой командой в матче
+                        return directMatch.team2Score > directMatch.team1Score ? -1 : 1;
+                    }
+                }
+                
+                // Если не было личной встречи, сохраняем порядок
+                return 0;
+            });
+
+            // Обновляем таблицу
+            const standingsBody = document.getElementById('standings-body');
+            standingsBody.innerHTML = '';
+
+            sortedTeams.forEach((team, index) => {
+                const row = document.createElement('tr');
+                row.className = 'team-row';
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${team.name}</td>
+                    <td>${team.matches}</td>
+                    <td>${team.wins}</td>
+                    <td>${team.losses}</td>
+                    <td>${team.setsWon}</td>
+                    <td>${team.setsLost}</td>
+                    <td>${team.points}</td>
+                `;
+                standingsBody.appendChild(row);
+            });
+        }
+
+        // Функция для обновления отображения результатов матчей
+        function updateMatchResults() {
+            const container = document.getElementById('match-results-container');
+            container.innerHTML = '';
+
+            // Группируем матчи по дням
+            const days = {
+                "19.05.2025": { num: 1, matches: [] },
+                "20.05.2025": { num: 2, matches: [] },
+                "21.05.2025": { num: 3, matches: [] },
+                "22.05.2025": { num: 4, matches: [] },
+                "23.05.2025": { num: 5, matches: [] },
+                "26.05.2025": { num: 6, matches: [] }
+            };
+            
+            // Добавляем обычные матчи
+            matches.forEach(match => {
+                // Ищем информацию о матче в расписании
+                const scheduleInfo = matchSchedule.find(m => 
+                    (m.team1 === match.team1 && m.team2 === match.team2) || 
+                    (m.team1 === match.team2 && m.team2 === match.team1)
+                );
+                
+                if (scheduleInfo) {
+                    const dateKey = scheduleInfo.date;
+                    
+                    if (days[dateKey]) {
+                        days[dateKey].matches.push({
+                            time: scheduleInfo.time,
+                            team1: match.team1,
+                            team2: match.team2,
+                            team1Score: match.team1Score,
+                            team2Score: match.team2Score
+                        });
+                    }
+                }
+            });
+            
+            // Добавляем финальные матчи
+            if (finalMatches.thirdPlace) {
+                const dateKey = "26.05.2025";
+                
+                if (days[dateKey]) {
+                    days[dateKey].matches.push({
+                        time: "12:10-12:30",
+                        team1: finalMatches.thirdPlace.team1,
+                        team2: finalMatches.thirdPlace.team2,
+                        team1Score: finalMatches.thirdPlace.team1Score,
+                        team2Score: finalMatches.thirdPlace.team2Score,
+                        isPlayoff: true,
+                        type: "Матч за 3 место"
+                    });
+                }
+            }
+            
+            if (finalMatches.final) {
+                const dateKey = "26.05.2025";
+                
+                if (days[dateKey]) {
+                    days[dateKey].matches.push({
+                        time: "12:30-12:50",
+                        team1: finalMatches.final.team1,
+                        team2: finalMatches.final.team2,
+                        team1Score: finalMatches.final.team1Score,
+                        team2Score: finalMatches.final.team2Score,
+                        isPlayoff: true,
+                        type: "Финал"
+                    });
+                }
+            }
+
+            // Отображаем матчи по дням
+            for (const dateKey in days) {
+                const dayInfo = days[dateKey];
+                
+                if (dayInfo.matches.length > 0) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.className = 'match-day';
+                    
+                    // Отображаем номер дня вместо даты
+                    dayDiv.innerHTML = `<h3>День ${dayInfo.num}</h3>`;
+                    
+                    // Сортируем матчи по времени
+                    const sortedMatches = dayInfo.matches.sort((a, b) => {
+                        const timeA = a.time.split('-')[0];
+                        const timeB = b.time.split('-')[0];
+                        return timeA.localeCompare(timeB);
+                    });
+
+                    sortedMatches.forEach(match => {
+                        const matchDiv = document.createElement('div');
+                        matchDiv.className = 'match-result';
+                        
+                        if (match.isPlayoff) {
+                            matchDiv.innerHTML = `
+                                <p><strong>${match.type}</strong>: ${match.team1} ${match.team1Score} : ${match.team2Score} ${match.team2}</p>
+                            `;
+                        } else {
+                            matchDiv.innerHTML = `
+                                <p>${match.team1} ${match.team1Score} : ${match.team2Score} ${match.team2}</p>
+                            `;
+                        }
+                        
+                        dayDiv.appendChild(matchDiv);
+                    });
+
+                    container.appendChild(dayDiv);
+                }
+            }
+        }
+        
+        // Функция для обновления расписания
+        function updateSchedule() {
+            // Обновляем таблицу с расписанием группового этапа
+            const scheduleBody = document.getElementById('schedule-body');
+            scheduleBody.innerHTML = '';
+            
+            matchSchedule.forEach(match => {
+                const row = document.createElement('tr');
+                
+                // Добавляем класс для выделения матчей с результатами
+                if (match.result) {
+                    row.classList.add('highlighted');
+                }
+                
+                row.innerHTML = `
+                    <td>${match.date}</td>
+                    <td>${match.day}</td>
+                    <td>${match.time}</td>
+                    <td>${match.team1}</td>
+                    <td>${match.team2}</td>
+                    <td>${match.result || '-'}</td>
+                `;
+                
+                scheduleBody.appendChild(row);
+            });
+            
+            // Обновляем таблицу с расписанием финального этапа
+            const finalScheduleBody = document.getElementById('final-schedule-body');
+            finalScheduleBody.innerHTML = '';
+            
+            finalSchedule.forEach(match => {
+                const row = document.createElement('tr');
+                
+                // Добавляем класс для выделения матчей с результатами
+                if (match.result) {
+                    row.classList.add('highlighted');
+                }
+                
+                row.innerHTML = `
+                    <td>${match.date}</td>
+                    <td>${match.day}</td>
+                    <td>${match.time}</td>
+                    <td>${match.name}</td>
+                    <td>${match.team1 && match.team2 ? `${match.team1} - ${match.team2}` : 'Будет определено'}</td>
+                    <td>${match.result || '-'}</td>
+                `;
+                
+                finalScheduleBody.appendChild(row);
+            });
+        }
+
+        // Инициализация страницы при загрузке
+        window.onload = function() {
+            // Обновляем статистику команд
+            updateTeamStats();
+            
+            // Обновляем таблицу
+            updateStandings();
+            
+            // Обновляем расписание
+            updateSchedule();
+            
+            // Обновляем результаты
+            updateMatchResults();
+        };
+    </script>
+</body>
+</html> 
