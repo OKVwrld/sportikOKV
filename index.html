@@ -154,6 +154,10 @@
                 font-size: 1.3em;
             }
         }
+        .red-team {
+            color: #d32f2f;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -250,7 +254,9 @@
             { team1: "НТЦ-3", team2: "СГИ", team1Score: 2, team2Score: 0 },
             { team1: "НТЦ-1", team2: "НТЦ-2 (Д)", team1Score: 1, team2Score: 2 },
             { team1: "НТЦ-2 (С)", team2: "НТЦ-3", team1Score: 0, team2Score: 2 },
-            { team1: "СГИ", team2: "НТЦ-2 (Д)", team1Score: 2, team2Score: 1 }
+            { team1: "СГИ", team2: "НТЦ-2 (Д)", team1Score: 2, team2Score: 1 },
+            { team1: "НТЦ-1", team2: "НТЦ-3", team1Score: 0, team2Score: 2 },
+            { team1: "НТЦ-2 (С)", team2: "СГИ", team1Score: 2, team2Score: 0 }
         ];
         
         // Массив для хранения результатов финальных матчей
@@ -269,14 +275,14 @@
             { date: "21.05.2025", day: "СР", time: "12:30-12:50", team1: "НТЦ-1", team2: "НТЦ-2 (Д)", result: "1:2" },
             { date: "22.05.2025", day: "ЧТ", time: "12:10-12:30", team1: "НТЦ-2 (С)", team2: "НТЦ-3", result: "0:2" },
             { date: "22.05.2025", day: "ЧТ", time: "12:30-12:50", team1: "СГИ", team2: "НТЦ-2 (Д)", result: "2:1" },
-            { date: "23.05.2025", day: "ПТ", time: "12:10-12:30", team1: "НТЦ-1", team2: "НТЦ-3", result: null },
-            { date: "23.05.2025", day: "ПТ", time: "12:30-12:50", team1: "НТЦ-2 (С)", team2: "СГИ", result: null }
+            { date: "23.05.2025", day: "ПТ", time: "12:10-12:30", team1: "НТЦ-1", team2: "НТЦ-3", result: "0:2" },
+            { date: "23.05.2025", day: "ПТ", time: "12:30-12:50", team1: "НТЦ-2 (С)", team2: "СГИ", result: "2:0" }
         ];
         
         // Расписание финальных матчей
         let finalSchedule = [
-            { date: "26.05.2025", day: "ПН", time: "12:10-12:30", type: "third-place", name: "Матч за 3 место", team1: "", team2: "", result: null },
-            { date: "26.05.2025", day: "ПН", time: "12:30-12:50", type: "final", name: "Финал", team1: "", team2: "", result: null }
+            { date: "26.05.2025", day: "ПН", time: "12:10-12:30", type: "third-place", name: "Матч за 3 место", team1: "НТЦ-2 (С)", team2: "СГИ", result: null },
+            { date: "26.05.2025", day: "ПН", time: "12:30-12:50", type: "final", name: "Финал", team1: "НТЦ-3", team2: "НТЦ-2 (Д)", result: null }
         ];
         
         // Функция для переключения между вкладками
@@ -385,6 +391,10 @@
             sortedTeams.forEach((team, index) => {
                 const row = document.createElement('tr');
                 row.className = 'team-row';
+                // Выделяем команду НТЦ-1 красным
+                if (team.name === 'НТЦ-1') {
+                    row.classList.add('red-team');
+                }
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td>${team.name}</td>
@@ -397,6 +407,17 @@
                 `;
                 standingsBody.appendChild(row);
             });
+            // Добавляем примечание под таблицей
+            let note = document.getElementById('withdraw-note');
+            if (!note) {
+                note = document.createElement('div');
+                note.id = 'withdraw-note';
+                note.style.marginTop = '10px';
+                note.style.color = '#d32f2f';
+                note.style.fontStyle = 'italic';
+                standingsBody.parentElement.appendChild(note);
+            }
+            note.textContent = '* снялись с турнира';
         }
 
         // Функция для обновления отображения результатов матчей
